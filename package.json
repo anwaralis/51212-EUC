@@ -1,0 +1,10 @@
+{
+    "contributes": {
+      "yamlValidation": [
+        {
+          "fileMatch": "yourfile.yml",
+          "url": "./schema.json"
+        }
+      ]
+    }
+  }
