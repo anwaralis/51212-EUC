@@ -1,0 +1,58 @@
+meta-data:
+  manifest-schema: AppDefinition
+  manifest-version: "0.01"
+app-definition:
+  itam-id: 51212
+  name: EUC-SCBIN
+  description: Need to build UAT server to perofrom development activity for EUC 51212
+  is-platform-service: true
+  bc: BC1
+  sbia: 1
+  ibs: true
+  ibs-service:
+    - "Transaction banking: Cash – Cross Border and Domestic Payments"
+  lob: Technology Strategy & Architecture (TSA)
+  ito-unit: TSA-Solution Delivery
+  materiality: null
+  cots: In-House
+  costcenter: "na"
+  sre-support-dl: "support@scbdev.com"
+  cvf-link: null
+  workload-placement-link: "http://confluencelink"
+  architecture-solution-intent-link: "http://confluencelink"
+app-scope:
+  internal-vs-external: Internal
+  business-regions:
+    - VN
+    - IN
+    - SG
+  type-of-workload: OLTP
+  type-of-architecture: batch processing
+  resiliency-level: Geo standby
+  third-copy-data: No
+  global-vs-regional: Global
+  saas-vs-iaas: NA
+  is-hybrid: Yes
+app-stack:
+  landing-zone:
+    - 12345
+    - 34567
+  app-stack:
+    - GTS-0000:Sample0 app again
+app-interfaces:
+  - type: inbound
+    name: app interface name
+    external: false
+    app-id: 23456
+    mode: point-to-point
+    protocol: wss
+    ecn-exists: false
+    tso: TSO Name
+  - type: inbound
+    name: iName
+    external: false
+    app-id: 23456
+    mode: solace
+    protocol: wss
+    ecn-exists: false
+    tso: TSO Name
