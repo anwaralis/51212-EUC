@@ -1,0 +1,5 @@
+meta-data:
+  manifest-schema: FirewallConfiguration
+  manifest-version: "0.1"
+fwrules:
+publishedservices:
