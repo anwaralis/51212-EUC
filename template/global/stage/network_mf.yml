@@ -1,0 +1,5 @@
+meta-data:
+  manifest-schema: NetworkConfiguration
+  manifest-version: "0.1"
+lbconfig:
+dnsconfig:
