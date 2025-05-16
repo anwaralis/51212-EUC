@@ -1,0 +1,5 @@
+meta-data:
+  manifest-schema: ComputeConfiguration
+  manifest-version: "0.1"
+compute-config:
+appliance-config: null
