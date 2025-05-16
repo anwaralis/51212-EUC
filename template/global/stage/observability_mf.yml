@@ -1,0 +1,19 @@
+meta-data:
+  manifest-schema: ObservabilityConfiguration
+  manifest-version: "0.1"
+observe-variables: null
+#  logs:
+#    app:
+#      enabled: "True"
+#  symlink:
+#    - "/var/logs/dir1;/cop/logs/noformat/symlinkname1"
+#    - "/var/logs/dir2;/cop/logs/json/symlinkname2"
+#    - "/var/logs/dir3;/cop/logs/iis/symlinkname3"
+#  monitoring:
+#    fs:
+#      - fs_name: "ActiveDirectory"
+#        fs_type: "ACTIVE-DIRECTORY"
+#        fs_parameters: "PowerShell_Dir:string|DOMAIN_NAME:string"
+#      - fs_name: "IIS"
+#        fs_type: "WEB_IIS_10"
+#        fs_parameters: ""
