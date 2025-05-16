@@ -1,0 +1,14 @@
+{
+    "yaml.schemas": {
+        "https://artifactory.global.standardchartered.com/artifactory/generic-sc-release_local/catalyst/manifest/app_definition_schema/app_definition_schema-[RELEASE].json": [
+            "*_mf.yml"
+        ],
+        "schema/app_definition_schema.json": [
+            "*1_mf.yml"
+        ]
+    },
+    "cSpell.enableFiletypes": [
+        "!yaml"
+    ],
+    "json.schemaDownload.enable": true,
+}
