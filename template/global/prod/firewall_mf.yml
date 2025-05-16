@@ -1,0 +1,16 @@
+meta-data:
+  manifest-schema: FirewallConfiguration
+  manifest-version: "0.01"
+fwrules:
+  - sourceitam: 51389
+    sourceinfra: LAN
+    destinationitam: 51212
+    destinationinfra: LAN
+    destinationservice: FD
+publishedservices:
+  - service: FD
+    infra: LAN
+    protocol:
+      - TCP:
+          - 445
+          - 22
