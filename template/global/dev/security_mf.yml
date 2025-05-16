@@ -1,0 +1,4 @@
+meta-data:
+  manifest-schema: SecurityConfiguration
+  manifest-version: "0.1"
+onecert: null
