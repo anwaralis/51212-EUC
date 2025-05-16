@@ -1,0 +1,1857 @@
+{
+  "$schema": "http://json-schema.org/2020-12/schema",
+  "$id": "schema/app_definition.json",
+  "title": "SC Infra Automation Manifest",
+  "$ref": "#/definitions/ParentManifest",
+  "definitions": {
+    "ParentManifest": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "meta-data": {
+          "$ref": "#/definitions/MetaData"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "meta-data": {
+                "type": "object",
+                "properties":{
+                  "manifest-schema": { "const": "AppDefinition" } 
+                }                
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/AppManifest"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "meta-data": {
+                "type": "object",
+                "properties":{
+                  "manifest-schema": { "const": "AppInstanceDefinition" } 
+                }                
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/AppInstanceManifest"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "meta-data": {
+                "type": "object",
+                "properties":{
+                  "manifest-schema": { "const": "StorageConfiguration" } 
+                }                
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/StorageConfiguration"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "meta-data": {
+                "type": "object",
+                "properties":{
+                  "manifest-schema": { "const": "ComputeConfiguration" } 
+                }                
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/ComputeConfiguration"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "meta-data": {
+                "type": "object",
+                "properties":{
+                  "manifest-schema": { "const": "NetworkConfiguration" } 
+                }                
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/NetworkConfiguration"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "meta-data": {
+                "type": "object",
+                "properties":{
+                  "manifest-schema": { "const": "FirewallConfiguration" } 
+                }                
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/FirewallConfiguration"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "meta-data": {
+                "type": "object",
+                "properties":{
+                  "manifest-schema": { "const": "LandingZoneConfiguration" } 
+                }                
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/LandingZoneConfiguration"
+          }
+        }
+      ],
+      "required": ["meta-data"],
+      "title": "ParentManifest"
+    },
+    "AppManifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meta-data": {
+          "$ref": "#/definitions/MetaData"
+        },
+        "app-definition": {
+          "$ref": "#/definitions/AppDefinition"
+        },
+        "app-scope": {
+          "$ref": "#/definitions/AppScope"
+        },
+        "app-stack": {
+          "$ref": "#/definitions/AppStack"
+        },
+        "app-interfaces":{
+          "type": ["array", "null"],
+          "description": "Application interface connectivity",
+          "errorMessage": "Invalid value Application interface connectivity",
+          "items": {
+            "$ref": "#/definitions/app-interfaces"
+          }          
+        }
+      },
+      "required": ["meta-data", "app-definition", "app-scope", "app-stack","app-interfaces"],
+      "title": "AppManifest"
+    },
+    "AppInstanceManifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meta-data": {
+          "$ref": "#/definitions/MetaData"
+        },
+        "instance-definition": {
+          "$ref": "#/definitions/AppInstanceDefinition"
+        },
+        "app-nfr": {
+          "$ref": "#/definitions/AppNFR"
+        },
+        "app-stack": {
+          "$ref": "#/definitions/AppStack"
+        },
+        "app-interfaces":{
+          "type": ["array", "null"],
+          "description": "Application interface connectivity",
+          "errorMessage": "Invalid value Application interface connectivity",
+          "items": {
+            "$ref": "#/definitions/app-interfaces"
+          }          
+        }
+      },
+      "required": ["meta-data", "app-nfr", "app-stack","app-interfaces","instance-definition"],
+      "title": "AppInstanceManifest"
+    },
+    "ComputeConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meta-data": {
+          "$ref": "#/definitions/MetaData"
+        },
+        "compute-config": {
+          "type": ["array", "null"],
+          "description": "Compute Configurations",
+          "items": {
+            "$ref": "#/definitions/vm"
+          }
+        },
+        "appliance-config": {
+          "type": ["array", "null"],
+          "description": "Appliance Configurations",
+          "items": {
+            "$ref": "#/definitions/appliance"
+          }
+        },
+        "terra-data-config": {
+          "description": "Terra data Configurations",
+          "$ref": "#/definitions/terra-data-config"
+        }
+      },
+      "required": ["meta-data", "compute-config"],
+      "title": "ComputeConfiguration"
+    },
+    "StorageConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meta-data": {
+          "$ref": "#/definitions/MetaData"
+        },
+        "nas-config": {
+          "type": ["array", "null"],
+          "description": "NAS Configurations",
+          "items": {
+            "$ref": "#/definitions/nas"
+          }
+        }
+      },
+      "required": ["meta-data", "nas-config"],
+      "title": "StorageConfiguration"
+    },
+    "FirewallConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meta-data": {
+          "$ref": "#/definitions/MetaData"
+        },
+        "firewall-config": {
+          "type": ["array", "null"],
+          "description": "Firewall Configurations",
+          "items": {
+            "$ref": "#/definitions/firewall"
+          }
+        }
+      },
+      "required": ["meta-data", "firewall-config"],
+      "title": "FirewallConfiguration"
+    },
+    "NetworkConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meta-data": {
+          "$ref": "#/definitions/MetaData"
+        },
+        "lb-config": {
+          "type": ["array", "null"],
+          "description": "Load balancer Configurations",
+          "items": {
+            "$ref": "#/definitions/remote-repo"
+          }
+        },
+        "dns-config": {
+          "type": ["array", "null"],
+          "description": "DNS Configurations",
+          "items": {
+            "$ref": "#/definitions/dns"
+          }
+        }
+      },
+      "required": ["meta-data", "lb-config","dns-config"],
+      "title": "NetworkConfiguration"
+    },
+    "LandingZoneConfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meta-data": {
+          "$ref": "#/definitions/MetaData"
+        }
+      },
+      "required": ["meta-data"],
+      "title": "FirewallConfig"
+    },
+    "MetaData": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "manifest-schema": {
+          "type": "string",
+          "enum": ["AppDefinition","AppInstanceDefinition","ComputeConfiguration","StorageConfiguration","NetworkConfiguration","FirewallConfiguration","LandingZoneConfiguration"],
+          "errorMessage": "Invalid Value for manifest-schema.Valid Values are AppDefinition / AppInstanceDefinition / ComputeConfiguration / StorageConfiguration / NetworkConfiguration / FirewallConfiguration / LandingZoneConfiguration"
+        },
+        "manifest-version": {
+          "type": "string",
+          "pattern": "^\\d+.[0-9]{1,2}$",
+          "errorMessage": "Must be in the format of <major version>.<minor version>"
+        }
+      },
+      "required": ["manifest-schema", "manifest-version"],
+      "title": "MetaData"
+    },
+    "AppDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "itam-id": {
+          "type": "integer",
+          "errorMessage": "Application ITAM No",
+          "default": "00000"
+        },
+        "name": {
+          "type": "string",
+          "description": "Application Name",
+          "default": "Sample Application"
+        },
+        "description": {
+          "type": "string",
+          "description": "A human-readable description of the Application."
+        },
+        "is-platform-service": {
+          "type": "boolean",
+          "description": "Whether this application is platform service"
+        },
+        "bc": {
+          "type": "string",
+          "description": "BC Rating of the application",
+          "enum": ["BC1", "BC2", "BC3", "BC4", "BC5"]
+        },
+        "sbia": {
+          "type": "integer",
+          "description": "Security Business Impact Assessment Rating",
+          "enum": [1, 2, 3, 4, 5]
+        },
+        "ibs": {
+          "type": "boolean",
+          "description": "Is Important Business Service ?"
+        },
+        "ibs-service": {
+          "type": ["array" , "null"],
+          "description": "List of IBS service names . Refer https://confluence.global.standardchartered.com/pages/viewpage.action?pageId=2517007666",
+          "errorMessage": "IBS service name required when ibs is true"
+        },
+        "lob": {
+          "type": "string",
+          "description": "LOB of the application",
+          "enum": ["Enterprise Technology (ET)","Global Functions (GF)","Information & Cyber Security (ICS)","SC Ventures (SCV)","Technology AME","Technology ASIA","Technology Commercial, Corporate & Institutional Banking (CCIB)","Technology Consumer, Private & Business Banking (CPBB)","Technology Europe & Americas","Technology Strategy & Architecture (TSA)"]
+        },
+        "ito-unit": {
+          "type": "string",
+          "description": "LOB of the application",
+          "enum": ["ET-CIS-Mainframe","ET-CIS-OTS","ET-End User Services","ET-Integration Services","ET-Security Technology Services","ET-Data Technologies","ET-IT Service Management","ET-CIS-Compute","ET-CIS-Web Service","ET-CIS-Automation","ET-Network Services","ET-Cloud","ET-CIS-Database","ET-CIS-Internal Cloud","ET-CIS-EBM","ET-CIS-CTM","ET-CIS-Storage","ET-CIS-Data Centre","GF-HR","GF-Risk","GF-Finance","GF-Audit","GF-Digital Foundation Technology","GF-FCSO","GF-CFCC","GF-Property","GF-Legal","GF-CABM","GF-Legal and Compliance","GF-Transformation","GF-HR, Corporate Affairs, B&M","GF-Corporate Affairs","OP-Identity & Access Management","OP-Cyber Security Services","OP-Group Threat Management","OP-CISO,Group COO-Trust,Data and Automation","SCV-Venture","In-Country Technology AME","In-Country Technology ASIA","CCIB-Cash","CCIB-Financial Markets","CCIB-Client Coverage","CCIB-Digital Channels","CCIB-DCDA","CCIB-Trade","CCIB-Global Banking","CCIB-Prod Eng Tools","CCIB-Securities Services","CPBB-Core Platforms","CPBB-Channels","CPBB-Retail Products","CPBB-Private, Priority Affluent & Wealth","CPBB-Digital Platforms","CPBB-Data Technology","CPBB-Business Banking","CPBB-Country Platform","CPBB-Architecture, Cloud, Engr. & Strategy","CPBB-Origination, Onboarding and Credit Decisioning","In-Country Technology Europe & Americas","TSA-Engineering Excellence & DevSecOps","TSA-Solution Delivery","TSA-Technology Governance","TSA-Test Engineering","TSA-Test Environment Management"]
+        },
+        "materiality": {
+          "type": ["boolean", "null"],
+          "description": "Is Material Application? This is mandatory for cloud deployments"
+        },
+        "cots": {
+          "type": "string",
+          "description": "IS COTS Application ?",
+          "enum": ["In-House", "COTS", "Customized COTS"]
+        },
+        "costcenter": {
+          "type": "string",
+          "description": "Application cost center id"
+        },
+        "sre-support-dl": {
+          "type": "string",
+          "description": "Support Email",
+          "format": "email"
+        },
+        "cvf-link": {
+          "type": ["string", "null"],
+          "description": "cloud value framework assessment link.This is mandatory for cloud deployments",
+          "format": "uri",
+          "qt-uri-protocols": ["https"]
+        },
+        "workload-placement-link": {
+          "type": ["string", "null"],
+          "description": "workload placement assessment link.This is mandatory for cloud deployments",
+          "format": "uri",
+          "qt-uri-protocols": ["https"]
+        },
+        "architecture-solution-intent-link": {
+          "type": "string",
+          "description": "SI confluence link",
+          "format": "uri",
+          "qt-uri-protocols": ["https"]
+        }
+      },
+      "if": {
+        "properties": {"ibs": {"const": true}}
+      },
+      "then":{
+        "required": ["ibs-service"]
+      },      
+      "required": [
+        "itam-id",
+        "name",
+        "description",
+        "is-platform-service",
+        "bc",
+        "sbia",
+        "ibs",
+        "lob",
+        "materiality",
+        "cots",
+        "costcenter",
+        "sre-support-dl",
+        "cvf-link",
+        "workload-placement-link",
+        "architecture-solution-intent-link"
+      ],
+      "title": "AppDefinition"
+    },
+    "AppScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "internal-vs-external": {
+          "type": "string",
+          "description": "whether internal facing or external internet facing",
+          "enum": ["Internal", "External"]
+        },
+        "business-regions": {
+          "type": ["array"],
+          "description": "iso country code.",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$",
+            "errorMessage": "Invalid hosting region. Only iso country code"
+          }          
+        },
+        "type-of-workload": {
+          "type": "string",
+          "description": "Type of the work load",
+          "enum": ["OLTP", "Batch", "Data & Analytics", "Support"]
+        },
+        "type-of-architecture": {
+          "type": "string",
+          "description": "Type of the architecture",
+          "enum": ["webapp", "client-server", "big data","batch processing"]
+        },
+        "resiliency-level": {
+          "type": "string",
+          "description": "resiliency level Component/Site/Geo standby/Geo pilot/ Platform"
+        },
+        "third-copy-data": {
+          "type": "string",
+          "description": "Third copy of data required ?",
+          "enum": ["Yes", "No"]
+        },
+        "global-vs-regional": {
+          "type": "string",
+          "description": "Is Global or market specific instance ?",
+          "enum": ["Global", "Regional"]
+        },
+        "saas-vs-iaas": {
+          "type": "string",
+          "description": "SaaS,IaaS or NA ",
+          "enum": ["SaaS", "IaaS", "NA"]
+        },
+        "is-hybrid": {
+          "type": "string",
+          "description": "is workload extends an hybrid deployment between csp or onprem ?",
+          "enum": ["Yes", "No"]
+        }
+      },
+      "required": [
+        "internal-vs-external",
+        "business-regions",
+        "type-of-workload",
+        "type-of-architecture",
+        "resiliency-level",
+        "third-copy-data",
+        "global-vs-regional",
+        "saas-vs-iaas",
+        "is-hybrid"
+      ],
+      "title": "AppScope"
+    },
+    "AppStack": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dc-foundation": {
+          "$ref": "#/definitions/gts-id-name-list"
+        },
+        "landing-zone": {
+          "$ref": "#/definitions/app-id-landing-zone-list"
+        },
+        "app-stack": {
+          "$ref": "#/definitions/gts-id-name-list"
+        }
+      },
+      "required": ["landing-zone", "app-stack"],
+      "title": "AppStack",
+      "description": "Application Stack"
+    },
+    "app-interfaces": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Interface name",
+          "pattern": "^(?!.*(?:MQ|solace|edmi|fileIT|kong|point-to-point)).*$",
+          "errorMessage": "Interface name can't contain ['MQ','solace','edmi','fileIT','kong','point-to-point']"
+        },
+        "type": {
+          "type": "string",
+          "description": "Interface type",
+          "enum": ["inbound","outbound"],
+          "errorMessage": "Invalid Interface type valid values are inbound / outbound"
+        },
+        "external": {
+          "type": "boolean",
+          "description": "Whether external interface is external third party system",
+          "errorMessage": "Invalid value for interface external. Choose true for external third party system(Outside of SCB)."
+        },
+        "app-id": {
+          "type": ["integer","null"],
+          "description": "Interface application id",
+          "errorMessage": "Invalid Interface application id"
+        },
+        "mode": {
+          "type": "string",
+          "description": "Interface mode",
+          "enum": ["MQ","solace","edmi","fileIT","kong","point-to-point","cbis","datapower"],
+          "errorMessage": "Invalid Interface mode . Valid values are MQ,solace,edmi,fileIT,kong,point-to-point,cbis,datapower"
+        },
+        "protocol": {
+          "type": "string",
+          "description": "Interface protocol",
+          "enum": ["https","jms","soap","rest","ftp","sftp","amqp","database","nas","Connect-Direct","wss","smtp","smpp","ldap"],
+          "errorMessage": "Invalid Interface protocol . Valid values are https,jms, soap, rest, ftp, sftp,amqp,database,nas,Connect-Direct,wss,smtp,ldap"
+        },
+        "ecn-exists": {
+          "type": "boolean",
+          "description": "Whether its an ECN connection",
+          "errorMessage": "Invalid value for ecn exists. Choose true if its ecn.",
+          "default": false
+        },
+        "tso": {
+          "type": "string",
+          "description": "Interface system TSO name",
+          "errorMessage": "Invalid value for interface system tso"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "external": {"const": false } }
+          },
+          "then": {
+            "properties": { "app-id": { "type": ["integer"] } }
+          }
+        }
+      ],
+      "required": ["type", "external", "app-id","mode","protocol","ecn-exists","tso"],
+      "title": "ApplicationInterface",
+      "description": "Application Interface"
+    },
+    "AppInstanceDefinition": {
+      "type": "object",
+      "description": "Application Instance details",
+      "additionalProperties": false,
+      "properties": {
+        "instance-id": {
+          "type": "string",
+          "description": "Unique Instance ID",
+          "pattern": "^[a-z]*$",
+          "errorMessage": "Invalid Instance ID.Id must be lowercase and three characters"
+        },        
+        "tso": {
+          "type": "string",
+          "description": "TSO Name",
+          "errorMessage": "Invalid target TSO"
+        }
+      },
+      "required": ["instance-id","tso"],
+      "title": "Application Instance details"
+    },    
+    "AppNFR": {
+      "type": "object",
+      "description": "Application NFR details",
+      "additionalProperties": false,
+      "properties": {
+        "backup": {
+          "type": "integer",
+          "description": "Backup frequency in days and must be between 1-30",
+          "errorMessage": "Invalid backup schedule, and must be between 1-30",
+          "minimum": 0,
+          "maximum": 30
+        },
+        "retention": {
+          "type": "integer",
+          "description": "Retention period in days, based on reqmt like 7 years (7*365 as days)",
+          "errorMessage": "Invalid backup retention",
+          "minimum": 0
+        },
+        "rto": {
+          "type": "integer",
+          "description": "RTO hours for the app as agreed with business component/site/geo",
+          "errorMessage": "Invalid RTO",
+          "minimum": 0
+        },
+        "rpo": {
+          "type": "integer",
+          "description": "RPO minutes for tha app as agreed with business component/site/geo",
+          "errorMessage": "Invalid RPO",
+          "minimum": 0
+        },
+        "mto": {
+          "type": "integer",
+          "description": "MTO hours for the app as agreed with business",
+          "errorMessage": "Invalid MTO",
+          "minimum": 0
+        },
+        "budget": {
+          "type": "number",
+          "description": "Monthly opex allocated in USD",
+          "errorMessage": "Invalid budget",
+          "minimum": 0
+        },
+        "users": {
+          "type": "number",
+          "description": "Number of users to the app",
+          "errorMessage": "Invalid app users",
+          "minimum": 0
+        },
+        "business-hours": {
+          "type": "string",
+          "pattern": "^([0-1]?[0-9]|2[0-3])[0-5][0-9]-([0-1]?[0-9]|2[0-3])[0-5][0-9]$",
+          "description": "App usage hours in GMT ,Format  HHMM-HHMM (Ex. 0830-1730)",
+          "errorMessage": "Invalid business-hours , should be in format 0830-1730 (HHMM-HHMM)"
+        },
+        "thirdcopy-data-location": {
+          "type": ["string", "null"],
+          "description": "Location for the third copy of data",
+          "errorMessage": "Invalid third copy location. Valid Values are GDCE / GDCW / SG / AWSRegion / AzureRegion",
+          "enum": ["GDCE", "GDCW", "SG", "AWSRegion", "AzureRegion", null]
+        },
+        "business-regions": {
+          "type": ["array"],
+          "description": "iso country code.",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$",
+            "errorMessage": "Invalid hosting region. Only iso country code"
+          }          
+        },        
+        "hosting-regions": {
+          "type": ["array"],
+          "description": "Hosting regions",
+          "errorMessage": "Invalid hosting region. Valid Values are GDCW / SG / AWSRegion / AzureRegion",
+          "items": {
+            "type": "string",
+            "enum": ["GDCW", "SG", "HK", "AWS", "Azure"],
+            "errorMessage": "Invalid hosting region. Valid Values are GDCW / SG / HK / AWS / Azure"
+          }
+        },
+        "target-provider": {
+          "type": "string",
+          "description": "Hosting provider",
+          "errorMessage": "Invalid target provider, Valid Values are AWS/Azure/Onprem",
+          "enum": ["AWS", "Azure", "Onprem"]
+        },
+        "daily-avg-datavolume": {
+          "type": "number",
+          "description": "Average data growth in mb daily",
+          "errorMessage": "Invalid average data volume",
+          "minimum": 0
+        },
+        "daily-avg-concurrency": {
+          "type": "number",
+          "description": "Avg no of concurrency of active users",
+          "errorMessage": "Invalid average no of concurrent users",
+          "minimum": 0
+        },
+        "daily-avg-logvolumes": {
+          "type": "number",
+          "description": "Daily average log volume",
+          "errorMessage": "Invalid average log volume",
+          "minimum": 0
+        },
+        "peak-concurrency": {
+          "type": "number",
+          "description": "Peak no of concurrency of active users",
+          "errorMessage": "Invalid peak no of concurrent users",
+          "minimum": 0
+        },
+        "service-accounts": {
+          "type": ["array", "null"],
+          "description": "Service accounts created",
+          "items": {
+            "$ref": "#/definitions/service-accounts"
+          }
+        },
+        "tcp-connections": {
+          "type": ["array", "null"],
+          "description": "Direct state full TCP connections",
+          "items": {
+            "$ref": "#/definitions/tcp-connections"
+          }
+        }
+      },
+      "required": [
+        "backup",
+        "retention",
+        "rto",
+        "rpo",
+        "mto",
+        "budget",
+        "users",
+        "business-hours",
+        "thirdcopy-data-location",
+        "hosting-regions",
+        "target-provider",
+        "daily-avg-datavolume",
+        "daily-avg-concurrency",
+        "daily-avg-logvolumes",
+        "peak-concurrency",
+        "tcp-connections"
+      ],
+      "title": "AppNFR"
+    },
+    "vm": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Virtual Machine Configuration",
+      "title": "Virtual Machine Configuration",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Unique Name for the virtual machine",
+          "pattern": "^[a-zA-Z0-9-]+[a-zA-Z0-9]$",
+          "errorMessage": "Invalid value for VM Name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the VM"
+        },
+        "target": {
+          "type": ["array","null"],
+          "description": "Target Region/Data center of the VM to be provisioned",
+          "errorMessage": "Invalid target. Valid Values are GDCW / SG / HK / AWS / Azure",
+          "items": {
+            "type": ["string"],
+            "enum": ["GDCW", "SG", "HK", "AWS", "Azure"],
+            "errorMessage": "Invalid hosting region. Valid Values are GDCW / SG / HK / AWS / Azure"
+          }
+        },
+        "target-zone": {
+          "type": "string",
+          "description": "Target zone of the VM to be provisioned",
+          "errorMessage": "Invalid target zone. Valid Values are campus / dmz1 / dmz2 / dmz3",
+          "enum": ["campus", "dmz1", "dmz2", "dmz3"]
+        },
+        "os": {
+          "type": "string",
+          "description": "VM operating system"
+        },
+        "resilience-level": {
+          "type": "string",
+          "description": "Resilience Level",
+          "errorMessage": "Invalid VM operating system. Valid Values are Geo / Local",
+          "enum": ["Geo", "Local"]
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the VM",
+          "errorMessage": "Invalid VM type. Valid Values are Virtual / Physical",
+          "enum": ["Virtual", "Physical"]
+        },
+        "server-function": {
+          "type": "string",
+          "description": "Server Function",
+          "errorMessage": "Valid Values are i - Infra / a - Application / d - Database",
+          "enum": ["i", "a", "d"]
+        },
+        "product": {
+          "type": "string",
+          "description": "Product to be installed",
+          "errorMessage": "Invalid value for Product.Valid Values are Generic / PostgreSQL / Oracle / OCP / SKE / mssql / Mainframe / JBOSS_EAP74 / JWS5_TOMCAT / WEBSPHERE_LIBERTY / OPENSOURCE_TOMCAT9 / RHEL_HTTPD / RHEL_NGINX / Db2",
+          "enum": ["Generic","Mainframe", "PostgreSQL","Oracle","OCP","SKE", "mssql", "JBOSS_EAP74", "JWS5_TOMCAT", "WEBSPHERE_LIBERTY", "OPENSOURCE_TOMCAT9", "RHEL_HTTPD", "RHEL_NGINX", "Db2"]
+        },
+        "product-profile": {
+          "type": "string",
+          "description": "Product profile to be installed",
+          "errorMessage": "Invalid value for Product profile.Valid Values are GDCE Zeus / GDCW Production / ocp-bootstrap / ocp-master / ocp-infra / ocp-worker / ocp-lb / ocp-templb",
+          "enum": ["GDCE Zeus", "GDCW Production","ocp-bootstrap","ocp-master","ocp-infra","ocp-worker","ocp-lb","ocp-templb"]
+        },
+        "database": {
+          "type": ["null"],
+          "description": "Parameters required to provision the Database in the VM",
+          "errorMessage": "Invalid Database parameters"
+        },
+        "container-platform": {
+          "type": ["null"],
+          "description": "Type of the container platform",
+          "errorMessage": "Valid Values are SKE / OCP",
+          "enum": ["null"]
+        },
+        "count": {
+          "type": "integer",
+          "description": "Count of VM",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 50
+        },
+        "no-of-additional-ip": {
+          "type": "integer",
+          "description": "No of additional IP's to be reserved",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 10
+        },
+        "attach-storage-nic": {
+          "type": "boolean",
+          "default": false,
+          "description": "whether dedicated storage NIC required"
+        },
+        "cpu": {
+          "type": "integer",
+          "description": "CPU required for the VM"
+        },
+        "memory": {
+          "type": "integer",
+          "description": "Memory required for the VM"
+        },
+        "backup": {
+          "type": ["object", "null"],
+          "description": "Backup configuration of the VM TODO valid values",
+          "errorMessage": "Valid Values are TODO yet to be determined"
+        },
+        "nas": {
+          "type": ["array", "null"],
+          "description": "NAS share mounts",
+          "errorMessage": "Invalid value for NAS",
+          "items": {
+            "$ref": "#/definitions/vm-nas"
+          }
+        },
+        "san": {
+          "type": ["array", "null"],
+          "description": "Additional disk requirements(San Storage).Use index 0 with scsi controller 0 only when you need to modify the root disk.",
+          "errorMessage": "Invalid value for SAN",
+          "items": {
+            "$ref": "#/definitions/san"
+          }
+        },
+        "os-groups": {
+          "type": ["array", "null"],
+          "description": "OS user groups",
+          "errorMessage": "Invalid value for user groups",
+          "items": {
+            "$ref": "#/definitions/os-groups"
+          }
+        },
+        "os-users": {
+          "type": ["array", "null"],
+          "description": "OS users",
+          "errorMessage": "Invalid value for users",
+          "items": {
+            "$ref": "#/definitions/os-users"
+          }
+        },
+        "local-disk": {
+          "type": ["array", "null"],
+          "description": "Local Disk for physical machine.",
+          "errorMessage": "Local Disk only applicable for physical",
+          "items": {
+            "$ref": "#/definitions/local-disk"
+          }
+        },        
+        "standard-bootstrap": {
+          "type": ["array", "null"],
+          "description": "Standard bootstrap scripts",
+          "errorMessage": "Invalid value for Standard bootstrap",
+          "items": {
+            "$ref": "#/definitions/standard-bootstrap"
+          }
+        },
+        "custom-bootstrap": {
+          "type": ["array", "null"],
+          "description": "Custom bootstrap scripts to be executed",
+          "errorMessage": "Invalid value for custom bootstrap",
+          "items": {
+            "$ref": "#/definitions/custom-bootstrap"
+          }          
+        },
+        "dr":{
+          "type": ["string","null"],
+          "description": "Not used.Kept for backward compatibility"
+        },
+        "tags":{
+          "type": ["array","null"],
+          "description": "Tags for the resource",
+          "items": {
+            "$ref": "#/definitions/tag-name-value"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type":{"const": "Physical"}}
+          },
+          "then":{
+            "required": ["local-disk"]
+          }
+        },
+        {
+        "if": {
+          "properties": { "resilience-level":{"const": "Local"}}
+        },
+        "then":{
+          "properties": { "target":{
+            "maxItems": 1
+          }
+          }
+        },
+        "else":{
+          "properties": { "target":{
+            "minItems": 2
+            }}
+        }
+      },
+      {
+        "if": {
+          "properties": { "type":{"const": "Virtual"}}
+        },
+        "then":{
+          "properties": { 
+            "memory":{
+              "enum": [2,4,6,8,12,16,24,32,48,64,96,128]
+            },
+            "cpu":{
+              "enum": [2,4,6,8,12,16,24,32]
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": { "product":{"const": "OCP"}}
+        },
+        "then":{
+          "properties": { 
+            "os":{
+              "errorMessage": "Invalid VM operating system. OCP supports only RHCOS",
+              "enum": ["RHCOS"]
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": { "product":{"const": "Mainframe"}}
+        },
+        "then":{
+          "properties": { 
+            "os":{
+              "errorMessage": "Invalid VM operating system. Valid values are AS400 / zOS V2.x / zOS V1.3 / zOS V1.0",
+              "enum": ["AS400","zOS V2.x","zOS V1.3","zOS V1.0","IBM Linux"]
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": { "product":{"enum": ["Generic","PostgreSQL","Oracle","SKE", "mssql"]}}
+        },
+        "then":{
+          "properties": { 
+            "os":{
+              "errorMessage": "Invalid VM operating system. Valid Values are SCB-RHEL8 / SCB-RHEL9 / SCB-W2K22 / SCB-W2K19",
+              "enum": ["SCB-RHEL8", "SCB-RHEL9" , "SCB-W2K22", "SCB-W2K19"]
+            }
+          }
+        }
+      }
+      ],           
+      "required": [
+        "name",
+        "description",
+        "target",
+        "target-zone",
+        "os",
+        "resilience-level",
+        "type",
+        "server-function",
+        "product",
+        "product-profile",
+        "count",
+        "no-of-additional-ip",
+        "attach-storage-nic",
+        "cpu",
+        "memory",
+        "backup",
+        "nas",
+        "san",
+        "standard-bootstrap",
+        "custom-bootstrap",
+        "os-groups",
+        "os-users"
+      ]
+    },
+    "nas": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "NAS Configuration",
+      "title": "NAS Configuration",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the NAS share",
+          "errorMessage": "Invalid value for NAS share"
+        },
+        "capacity": {
+          "type": "integer",
+          "description": "NAS Size in GB",
+          "errorMessage": "Invalid value for NAS share size"
+        },
+        "protocol": {
+          "type": "string",
+          "description": "NAS share protocol",
+          "errorMessage": "Invalid protocol. Valid Values are CIFS / NFSV3 / NFSV4.1 ",
+          "enum": ["CIFS","NFSV3","NFSV4.1"]
+        },
+        "tier-type": {
+          "type": "string",
+          "description": "NAS tier",
+          "errorMessage": "Invalid NAS tier. Valid Values are extreme / premium / standard",
+          "enum": ["extreme","premium","standard"]
+        },
+        "backup": {
+          "type": "string",
+          "enum": ["YES","NO"],
+          "default": "YES",
+          "description": "Backup required",
+          "errorMessage": "Invalid value for backup"
+        },
+        "replication": {
+          "type": "string",
+          "enum": ["YES","NO"],
+          "default": "YES",
+          "description": "Whether replication required ?",
+          "errorMessage": "Invalid value for replication"
+        },
+        "permissions": {
+          "type": "object",
+          "additionalProperties": false,
+          "title": "NAS Permissions",
+          "description": "NAS Permissions",
+          "errorMessage": "Invalid value for NAS",
+          "properties": {
+            "cifs": {
+              "type": ["array", "null"],
+              "description": "CIFS Permissions",
+              "title": "CIFS Permissions",
+              "errorMessage": "Invalid value for CIFS permissions",
+              "items": {
+                "$ref": "#/definitions/nas-cifs-permissions"
+              }
+            },            
+            "nfs": {
+              "type": "object",
+              "title": "NFS Permissions",
+              "description": "NFS permissions",
+              "errorMessage": "Invalid value for NFS permissions",
+              "properties": {
+                "netgroup": {
+                  "type": ["array", "null"],
+                  "description": "Netgroups for NFS",
+                  "errorMessage": "Invalid value - Netgroups for MFS",
+                  "items": {
+                    "$ref": "#/definitions/nas-nfs-permissions-ng"
+                  }
+                },
+                "fqdn": {
+                  "type": ["array", "null"],
+                  "description": "FQDN for NFS",
+                  "errorMessage": "Invalid value for NAS",
+                  "items": {
+                    "$ref": "#/definitions/nas-nfs-permissions-fqdn"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags":{
+          "type": ["array","null"],
+          "description": "Tags for the resource",
+          "items": {
+            "$ref": "#/definitions/tag-name-value"
+          }
+        }        
+      },
+      "required": ["name", "capacity", "protocol", "tier-type", "backup","permissions"],
+      "allOf": [
+        {
+          "if": {
+            "properties": { "protocol":{"const": "CIFS"}}
+          },
+          "then":{
+            "properties": {
+              "permissions":{
+                "required": ["cifs"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "not":{
+              "properties": { "protocol":{"const": "CIFS"}}
+            }
+          },
+          "then":{
+            "properties": {
+              "permissions":{
+                "required": ["nfs"]
+              }
+            }
+          }
+        }        
+      ] 
+    },
+    "firewall": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Firewall Configuration",
+      "title": "Firewall Configuration",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Description of the the connection"
+        },
+        "source": {
+          "type": ["array"],
+          "description": "Source IP/Subnet",
+          "errorMessage": "Invalid value for source",
+          "items": {
+            "type": "string",
+            "pattern": "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[012]?[0-9]))?$",
+            "errorMessage": "Invalid value for source.Only IP/Subnet allowed.(Ex. 10.25.10.0/24 or 10.25.10.75)"
+          }
+        },
+        "destination": {
+          "type": "string",
+          "description": "Destination IP/Subnet",
+          "errorMessage": "Invalid value for destination.Only IP/Subnet allowed.(Ex. 10.25.10.0/24 or 10.25.10.75)",
+          "pattern": "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/(3[0-2]|[012]?[0-9]))?$"
+        },
+        "destination-protocol": {
+          "type": "string",
+          "description": "Destination Protocol",
+          "errorMessage": "Invalid value for destination protocol. Valid Values are HTTP/HTTPS/TCP/UDP",
+          "enum": ["HTTP", "HTTPS", "TCP", "UDP"]
+        },
+        "destination-port": {
+          "type": "integer",
+          "description": "Destination port",
+          "errorMessage": "Invalid value for destination port",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "action": {
+          "type": "string",
+          "description": "Firewall Action",
+          "errorMessage": "Invalid value for action.Valid values are Permit/Deny",
+          "enum": ["Permit", "Deny"]
+        },
+        "validity": {
+          "type": "integer",
+          "description": "Firewall policy Validity",
+          "errorMessage": "Invalid value for Firewall policy Validity.Valid values are 0-4000",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 4000
+        }
+      },
+      "required": [
+        "description",
+        "source",
+        "destination",
+        "destination-protocol",
+        "destination-port",
+        "action",
+        "validity"
+      ]
+    },
+    "lb": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Firewall Configuration",
+      "title": "Firewall Configuration",
+      "properties": {
+        "lb-name": {
+          "type": "string",
+          "description": "Load balancer Name"
+        },
+        "dns-name": {
+          "type": "string",
+          "description": "Load balancer DNS name"
+        },
+        "listeners": {
+          "type": ["array", "null"],
+          "description": "Standard bootstrap scripts",
+          "errorMessage": "Invalid value for NAS",
+          "items": {
+            "$ref": "#/definitions/lb-listeners"
+          }
+        }
+      },
+      "required": ["lb-name", "dns-name", "listeners"]
+    },
+    "dns": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "DNS Configuration",
+      "title": "DNS Configuration",
+      "properties": {
+        "dns-name": {
+          "type": "string",
+          "description": "DNS Name"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the DNS record",
+          "errorMessage": "Invalid value DNS record type. Valid Values are CNAME/A",
+          "enum": ["CNAME", "A"]
+        },
+        "value": {
+          "type": "string",
+          "description": "Firewall Action",
+          "errorMessage": "Invalid value for action.Valid values are Permit/Deny"
+        }
+      },
+      "required": ["dns-name", "type", "value"]
+    },
+    "gts-id-name-list": {
+      "type": "array",
+      "description": "List of DC foundation services used",
+      "items": {
+        "type": "string",
+        "pattern": "^((GTS-[0-9]{3,5}:[a-zA-Z0-9\\s]+(?:;GTS-[0-9]{3,5}:[a-zA-Z0-9\\s]+)*))$",
+        "errorMessage": "Has to be captured in the format gtsid:standardname"
+      }
+    },
+    "app-id-landing-zone-list": {
+      "type": ["array","null"],
+      "description": "List of landing services used",
+      "items": {
+        "type": "integer",
+        "errorMessage": "Has to be ITAM ID"
+      }
+    },
+    "tcp-connections": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "TCP Connections",
+      "title": "TCPConnections",
+      "properties": {
+        "connection-name": {
+          "type": "string",
+          "description": "Name of source or destination system name"
+        },
+        "port": {
+          "type": "integer",
+          "description": "TCP connection port",
+          "errorMessage": "Invalid value for tcp port",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the TCP connection"
+        }
+      },
+      "required": ["connection-name", "port", "description"]
+    },
+    "service-accounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Service Accounts",
+      "title": "ServiceAccount",
+      "properties": {
+        "account-type": {
+          "type": "string",
+          "description": "Service account type",
+          "errorMessage": "Invalid service account type.Valid values are AD/Internal",
+          "enum": ["AD", "Internal"]
+        },
+        "service-principal": {
+          "type": "string",
+          "description": "Service account id",
+          "errorMessage": "Invalid value for service-principal"
+        },
+        "interactive": {
+          "type": "string",
+          "description": "ID usage type",
+          "errorMessage": "Invalid interactive, Valid values are Yes/No",
+          "enum": ["Yes", "No"]
+        }
+      },
+      "required": ["account-type", "service-principal", "interactive"]
+    },
+    "san": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Additional disk requirements(San Storage).Use index 0 with scsi controller 0 only when you need to modify the root disk.",
+      "title": "SAN",
+      "properties": {
+        "size": {
+          "type": "integer",
+          "description": "SAN Size in GB",
+          "errorMessage": "Invalid SAN size (Ex. 100)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description",
+          "errorMessage": "Invalid value for Description"
+        },
+        "scsi-controller": {
+          "type": "integer",
+          "description": "Each VM supports up to 4 SCSI Controller ( Index 0 - 3 )",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 3
+        },
+        "index": {
+          "type": "integer",
+          "enum": [0,1,2,3,4,5,6,8,9,10,11,12,13,14,15],
+          "default": 0,
+          "errorMessage": "Each SCSI Controller supports up to 15 disks ( Index 0 - 6 and 8 - 15 )",
+          "description": "Each SCSI Controller supports up to 15 disks ( Index 0 - 6 and 8 - 15 ).Disk 0 on SCSI Controller 0 has been reserved to default disk, which cannot be used for additional disk .Use index 0 with scsi controller 0 only when you need to modify the internal disk, otherwise do not use index 0 on scsi controller 0"
+        },
+        "mount-path": {
+          "type": "string",
+          "description": "Mount path for the NAS (Ex. /data/applogs)",
+          "errorMessage": "Invalid mount path (Ex. /data/applogs)"
+        }        
+      },
+      "required": ["size", "scsi-controller","index","mount-path"]
+    },
+    "local-disk": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Local Disk for Physical Machines",
+      "title": "Local Disk",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the NAS to be Mounted",
+          "errorMessage": "Invalid value for NAS name"
+        },
+        "size": {
+          "type": "integer",
+          "description": "SAN Size in GB",
+          "errorMessage": "Invalid SAN size (Ex. 100)"
+        },        
+        "no-of-disk": {
+          "type": "integer",
+          "description": "No of local Disks to be attached",
+          "errorMessage": "Invalid local disk count"
+        },
+        "raid": {
+          "type": "string",
+          "description": "RAID Configuration",
+          "errorMessage": "Invalid value for RAID",
+          "enum": ["RAID-0","RAID-1","RAID-5","RAID-6","RAID-10"]
+        }
+      },
+      "required": ["size","no-of-disk", "name","raid"]
+    },
+    "vm-nas": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "NAS",
+      "title": "NAS",
+      "properties": {
+        "mount-path": {
+          "type": "string",
+          "description": "Mount path for the NAS (Ex. /data/applogs)",
+          "errorMessage": "Invalid mount path (Ex. /data/applogs)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the NAS to be Mounted",
+          "errorMessage": "Invalid value for NAS name"
+        }
+      },
+      "required": ["mount-path", "name"]
+    },
+    "os-groups": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "OS groups",
+      "title": "OSGroups",
+      "properties": {
+        "group": {
+          "type": "string",
+          "description": "OS group name",
+          "pattern": "^[a-zA-Z_\\-0-9]+$",
+          "errorMessage": "Invalid value for os group name"
+        },
+        "gid": {
+          "type": ["number","null"],
+          "description": "Group gid",
+          "minimum": 0,
+          "errorMessage": "Invalid value for Group gid"
+        }
+      },
+      "required": ["group", "gid"]
+    },
+    "os-users": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "NAS",
+      "title": "NAS",
+      "properties": {
+        "user": {
+          "type": "string",
+          "description": "User name",
+          "pattern": "^[a-zA-Z_\\-0-9]+$",
+          "errorMessage": "Invalid value for user name"
+        },
+        "uid": {
+          "type": ["number","null"],
+          "minimum": 0,
+          "description": "Users UID.Leave this as null to auto generate",
+          "errorMessage": "Invalid value for UID"
+        },
+        "gid": {
+          "type": ["number","null"],
+          "minimum": 0,
+          "description": "Users primary group id.Leave this as null to auto generate",
+          "errorMessage": "Invalid value for GID"
+        },
+        "secondary-gid": {
+          "type": ["array","null"],
+          "minimum": 0,
+          "description": "Users secodary group ids",
+          "items":{
+            "type": "number",
+            "minimum": 0
+          },
+          "errorMessage": "Invalid value for GID"
+        },        
+        "home": {
+          "type": "string",
+          "description": "User home directory",
+          "errorMessage": "Invalid value user home"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the user id",
+          "errorMessage": "Invalid value user description"
+        }
+      },
+      "required": ["user","uid" ,"gid"]
+    },    
+    "standard-bootstrap": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Standard Bootstrap Scripts",
+      "title": "Standard Bootstrap Scripts",
+      "properties": {
+        "id": {
+          "type": "number",
+          "description": "Unique ID of the script",
+          "errorMessage": "Invalid value for id",
+          "minimum": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "Description",
+          "errorMessage": "Invalid value for Description"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the bootstrap script",
+          "errorMessage": "Invalid value for bootstrap script (Software/Script)",
+          "enum": ["Software", "Script"]
+        },
+        "gts-id": {
+          "type": "string",
+          "description": "GTS ID of the standard software",
+          "errorMessage": "Invalid value for gts-id.(Ex GTS-0000)",
+          "pattern": "^GTS-[0-9]{3,5}$"
+        },
+        "script-location": {
+          "type": ["string", "null"],
+          "description": "Location of the script or script id"
+        },
+        "rollback-script": {
+          "type": ["string", "null"],
+          "description": "Location of the rollback script"
+        },
+        "run-as": {
+          "type": ["string"],
+          "description": "Script execution user"
+        },
+        "parameters": {
+          "type": ["object", "null"],
+          "additionalProperties": true
+        }
+      },
+      "required": ["id", "gts-id","run-as"]
+    },
+    "custom-bootstrap": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Custom Bootstrap Scripts",
+      "title": "Custom Bootstrap Scripts",
+      "properties": {
+        "id": {
+          "type": "number",
+          "description": "Unique ID of the script",
+          "errorMessage": "Invalid value for id",
+          "minimum": 1
+        },
+        "description": {
+          "type": ["string","null"],
+          "description": "Description",
+          "errorMessage": "Invalid value for Description"
+        },
+        "script-location": {
+          "type": ["string", "null"],
+          "description": "Actual Script to be Executed"
+        },
+        "rollback-script": {
+          "type": ["string", "null"],
+          "description": "Location of the rollback script"
+        },
+        "run-as": {
+          "type": ["string"],
+          "description": "Script execution user"
+        },
+        "parameters": {
+          "type": ["object", "null"],
+          "additionalProperties": true
+        }
+      },
+      "if": {
+        "properties": {"run-as": {"const": "root"}}
+      },
+      "then":{
+        "properties": { 
+          "script-location":{
+              "pattern": "^scripts\/root\/[a-zA-Z\/.]*",
+              "errorMessage": "script must be under scripts/root/ directory when it requires to run with root users"
+          },
+          "rollback-script":{
+            "pattern": "^scripts\/root\/[a-zA-Z\/.]*",
+            "errorMessage": "script must be under scripts/root/ directory when it requires to run with root users"
+          }
+        }
+      },      
+      "required": ["id", "script-location", "rollback-script","run-as"]
+    },
+    "nas-cifs-permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "NAS CIFS Permissions",
+      "title": "NAS CIFS Permissions",
+      "properties": {
+        "zone": {
+          "type": "string",
+          "description": "Zone of the user or group",
+          "enum": ["zone1-scbnet", "zone2-scbnet","zone3-scbnet","sc-engg.com"],
+          "errorMessage": "Invalid value for zone"
+        },
+        "type": {
+          "type": "string",
+          "description": "Identity type (User or Group)",
+          "enum": ["user","usergroup"],
+          "errorMessage": "Invalid value for type"
+        },
+        "user-or-group": {
+          "type": "string",
+          "description": "User name or Group Name",
+          "errorMessage": "Invalid value for user-or-group"
+        },
+        "access": {
+          "type": "string",
+          "description": "Access level of the Identity",
+          "enum": ["Full_Control","Read"],
+          "errorMessage": "Invalid value for access"
+        }
+      },
+      "required": ["zone", "type","user-or-group","access"]
+    },
+    "nas-nfs-permissions-ng":{
+      "type": "object",
+      "additionalProperties": false,
+      "description": "NAS NFS Permissions",
+      "title": "NAS NFS Permissions",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the netgroup",
+          "errorMessage": "Invalid value for netgroup name"
+        },
+        "access": {
+          "type": "string",
+          "description": "Access level of netgroup",
+          "enum": ["Full_Control","Read"],
+          "errorMessage": "Invalid value for netgroup access"
+        }
+      },
+      "required": ["name", "access"]    
+    },
+    "nas-nfs-permissions-fqdn":{
+      "type": "string",
+      "additionalProperties": false,
+      "description": "NAS NFS Permissions",
+      "title": "NAS NFS Permissions"
+    },    
+    "lb-listeners": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Listener Configuration",
+      "title": "Listener Configuration",
+      "properties": {
+        "lb-port": {
+          "type": "integer",
+          "description": "Name of the server to whitelisted",
+          "errorMessage": "Invalid value for server name",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "loadbalancing": {
+          "type": "string",
+          "description": "Load balancing type.",
+          "errorMessage": "Invalid value for balancing type.Valid values are Least connection / Round Robin",
+          "enum": ["Least connection", "Round Robin"]
+        },
+        "servers": {
+          "type": ["array", "null"],
+          "description": "List of backend servers",
+          "errorMessage": "Invalid value for backend servers",
+          "items": {
+            "$ref": "#/definitions/lb-listeners-servers"
+          }          
+        }
+      },
+      "required": ["lb-port", "loadbalancing", "servers"]
+    },
+    "lb-listeners-servers": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Backend Servers Configuration",
+      "title": "Backend Servers Configuration",
+      "properties": {
+        "server": {
+          "type": "string",
+          "description": "Backend server DNS or ip",
+          "pattern": "^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)?$",
+          "errorMessage": "Invalid backend ip"
+        },
+        "server-port": {
+          "type": "integer",
+          "description": "Name of the server to whitelisted",
+          "errorMessage": "Invalid value for server name",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "healthcheck-url": {
+          "type": "string",
+          "description": "Health check URL",
+          "errorMessage": "Invalid value for health check URL"
+        }
+      },
+      "required": ["server", "server-port", "healthcheck-url"]
+    },
+    "remote-repo": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Remote Source Repository",
+      "title": "Remote Source Repository",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "description": "Remote Repository"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name"
+        },
+        "ref": {
+          "type": "string",
+          "description": "Reference Branch",
+          "errorMessage": "Invalid value for reference Branch"
+        }
+      },
+      "required": ["repository", "name", "ref"]
+    },
+    "appliance": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Appliance Configuration",
+      "title": "Appliance Configuration",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Unique Name for the Appliance",
+          "errorMessage": "Invalid value for Appliance"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the Appliance"
+        },
+        "target": {
+          "type": ["array","null"],
+          "description": "Target Region/Data center of the Appliance",
+          "errorMessage": "Invalid target. Valid Values are GDCW / SG / HK / AWS / Azure",
+          "items": {
+            "type": ["string"],
+            "enum": ["GDCW", "SG", "HK", "AWS", "Azure"],
+            "errorMessage": "Invalid hosting region. Valid Values are GDCW / SG / HK / AWS / Azure"
+          }
+        },
+        "target-zone": {
+          "type": "string",
+          "description": "Target zone of the Appliance",
+          "errorMessage": "Invalid target zone. Valid Values are campus / dmz1 / dmz2 / dmz3",
+          "enum": ["campus", "dmz1", "dmz2", "dmz3"]
+        },
+        "os": {
+          "type": "string",
+          "description": "Appliance operating system"
+        },
+        "dr": {
+          "type": ["string","null"],
+          "description": "Not used.Kept for backward compatibility"
+        },
+        "resilience-level": {
+          "type": "string",
+          "description": "Resilience Level",
+          "errorMessage": "Invalid Resilience level. Valid Values are Geo / Local",
+          "enum": ["Geo", "Local"]
+        },
+        "product": {
+          "type": "string",
+          "description": "Product of Appliance",
+          "errorMessage": "Invalid value for Product Appliance.Valid Values are Generic / PostgreSQL"
+        },
+        "count": {
+          "type": "integer",
+          "description": "Count of Appliance",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cpu": {
+          "type": "integer",
+          "description": "CPU required for the VM"
+        },
+        "memory": {
+          "type": "integer",
+          "description": "Memory required for the VM"
+        },
+        "tags":{
+          "type": ["array","null"],
+          "description": "Tags for the resource",
+          "items": {
+            "$ref": "#/definitions/tag-name-value"
+          }
+        }
+      },
+      "if": {
+        "properties": { "resilience-level":{"const": "Local"}}
+      },
+      "then":{
+        "properties": { "target":{
+          "maxItems": 1
+        }
+        }
+      },
+      "else":{
+        "properties": { "target":{
+          "minItems": 2
+          }}
+      },           
+      "required": [
+        "name",
+        "description",
+        "target",
+        "target-zone",
+        "os",
+        "resilience-level",
+        "product",
+        "count",
+        "cpu",
+        "memory"
+        ]
+    },
+    "terra-data-config": {
+      "type": ["object","null"],
+      "additionalProperties": false,
+      "description": "Terra Data Configuration",
+      "title": "Terra Data Configuration",
+      "properties": {
+        "id": {
+          "type": ["string","number"],
+          "description": "Unique name or id for the tenant",
+          "errorMessage": "Invalid value for ID"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the tenant"
+        },
+        "tcore": {
+          "type": "integer",
+          "description": "No of CPU"
+        },
+        "no-of-connections": {
+          "type": "integer",
+          "description": "No of network connections"
+        },
+        "disk": {
+          "type": "integer",
+          "description": "Size in TB",
+          "errorMessage": "Invalid value for disk size"
+        }
+      },         
+      "required": [
+        "id",
+        "description",
+        "tcore",
+        "no-of-connections",
+        "disk"
+        ]
+    },
+    "tag-name-value":{
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Resource Tags",
+      "title": "Resource Tags",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the tag",
+          "errorMessage": "Invalid value for tag name"
+        },
+        "value": {
+          "type": "string",
+          "description": "Value for the tag",
+          "errorMessage": "Invalid value for tag value"
+        }
+      },
+      "required": ["name", "value"]    
+    }        
+  }
+}
