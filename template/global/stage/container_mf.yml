@@ -1,0 +1,4 @@
+meta-data:
+  manifest-schema: ContainerConfiguration
+  manifest-version: '0.1'
+container-config:
