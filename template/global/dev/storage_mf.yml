@@ -1,0 +1,4 @@
+meta-data:
+  manifest-schema: StorageConfiguration
+  manifest-version: "0.1"
+nas-config: null
