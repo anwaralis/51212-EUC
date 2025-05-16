@@ -1,0 +1,37 @@
+trigger: none
+
+parameters:
+  - name: infraAction
+    displayName: Infrastructure Actions
+    type: string
+    default: create
+    values:
+      - create
+      - delete
+
+  - name: env
+    displayName: Deploy-Environment
+    type: string
+    default: dev
+    values:
+      - dev
+      - stage
+      - test
+      - testcatalyst
+
+
+resources:
+  repositories:
+    - repository: catalyst-templates
+      type: git
+      name: "catalyst-automation/catalyst-templates"
+
+
+extends:
+  template: pipeline/automation.yml@catalyst-templates
+  parameters:
+    environments:
+      - name: ${{ parameters.env }}
+        pool: sc-ado-catalyst
+        type: devfactory # Either 'devfactory' or 'dc'
+        infraAction: ${{ parameters.infraAction }}
