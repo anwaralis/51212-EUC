@@ -1,0 +1,57 @@
+meta-data:
+  manifest-schema: AppInstanceDefinition
+  manifest-version: "0.1"
+instance-definition:
+  tso: TSO NAME
+  instance-id: global
+app-nfr:
+  backup: 0
+  retention: 90
+  rto: 1
+  rpo: 15
+  mto: 2
+  budget: 100
+  users: 20
+  business-hours: 0000-0800
+  business-regions:
+    - VN
+    - ID
+  thirdcopy-data-location: null
+  hosting-regions:
+    - SG
+    - HK
+  target-provider: Onprem
+  daily-avg-datavolume: 1000
+  daily-avg-concurrency: 10
+  daily-avg-logvolumes: 200
+  peak-concurrency: 50
+  service-accounts:
+    - account-type: AD
+      service-principal: svc.app.001
+      interactive: No
+  tcp-connections:
+    - connection-name: system name
+      port: 1234
+      description: Comunicate with terminal devices
+app-stack:
+  landing-zone:
+    - 53470
+  app-stack:
+    - GTS-0000:Sample0 test
+app-interfaces:
+  - type: inbound
+    name: app interface name
+    external: true
+    app-id: null
+    mode: solace
+    protocol: Connect-Direct
+    ecn-exists: true
+    tso: TSO Name
+  - type: inbound
+    name: app interface name
+    external: false
+    app-id: 53470
+    mode: solace
+    protocol: Connect-Direct
+    ecn-exists: true
+    tso: TSO Name
